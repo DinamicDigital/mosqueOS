@@ -1,0 +1,7 @@
+/**/*.o
+/**/*.bin
+/**/*.img
+/bochsout.txt
+/bx_enh_dbg.ini
+.vscode
+!/qloader2.bin

@@ -99,35 +99,18 @@ void gdt_init(void)
     gdt_entries[1].granularity = 0b00100000;
     gdt_entries[1].base_high_8 = 0;
     
-    gdt_entries[1].limit       = 0;
-    gdt_entries[1].base_low_16 = 0;
-    gdt_entries[1].base_middle_8  = 0;
-    gdt_entries[1].access      = 0b10010010;
-    gdt_entries[1].granularity = 0b00000000;
-    gdt_entries[1].base_high_8 = 0;
+    gdt_entries[2].limit       = 0;
+    gdt_entries[2].base_low_16 = 0;
+    gdt_entries[2].base_middle_8  = 0;
+    gdt_entries[2].access      = 0b10010010;
+    gdt_entries[2].granularity = 0b00000000;
+    gdt_entries[2].base_high_8 = 0;
     
     gdt_pointer.size    = (uint16_t) (sizeof(gdt_entries) - 1);
     gdt_pointer.address = (uint64_t) (&gdt_entries);
     
     asm volatile (
-                  "lgdtq %0;"
-                  
-                  // Long jump to set cs and ss.
-                  "movq rax, rsp;"
-                  "pushq %1;"
-                  "pushq rax;"
-                  "pushfq;"
-                  "pushq %2;"
-                  "pushq 1f;"
-                  "iretq;"
-                  
-                  // Reload segments.
-                  "1:;"
-                  "movw ax, %1;"
-                  "movw ds, ax;"
-                  "movw es, ax;"
-                  "movw fs, ax;"
-                  "movw gs, ax;"
+                  "lgdt %0;"
                   :
                   : "m" (gdt_pointer), "i" (DATA_SEGMENT), "i" (CODE_SEGMENT)
                   : "rax"

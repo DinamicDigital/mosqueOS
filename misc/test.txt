@@ -1,0 +1,19 @@
+
+MISMATCH: "lgdtq $0"
+
+
+movq rax,rsp
+MISMATCH: "pushq $1"
+MISMATCH: "pushq %rax"
+pushfq
+MISMATCH: "pushq $1"
+MISMATCH: "pushq $1f"
+iretq
+
+.l1: 
+        mov  ax,1
+        mov  ds,ax
+        mov  es,ax
+        mov  fs,ax
+        mov  gs,ax
+

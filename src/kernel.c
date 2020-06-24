@@ -1,24 +1,8 @@
 #include <stdint.h>
-#include <stivale.h>
 #include "vga.h"
 #include "vga_out.h"
 #include "terminal.h"
 #include "types.h"
-/**
-* Stack for bootstrapping the kernel
-*/
-
-static char stack[4096] = {0};
-
-__attribute__((section(".stivalehdr"), used))
-struct stivale_header header = {
-    .stack = (uintptr_t)stack + sizeof(stack),
-    .framebuffer_bpp = 0,
-    .framebuffer_width = 0,
-    .framebuffer_height = 0,
-    .flags = 0,
-    .entry_point = 0
-};
 
 static inline void outb(u16 port, u8 val)
 {
@@ -109,25 +93,34 @@ void gdt_init(void)
     gdt_pointer.size    = (uint16_t) (sizeof(gdt_entries) - 1);
     gdt_pointer.address = (uint64_t) (&gdt_entries);
     
+    
     asm volatile (
                   "lgdt %0;"
                   :
-                  : "m" (gdt_pointer), "i" (DATA_SEGMENT), "i" (CODE_SEGMENT)
-                  : "rax"
+                  : "m" (gdt_pointer)
+                  :
                   );
 }
 
-void _start(struct stivale_struct *bootloader_data) 
+extern void get_arch(struct arch* nugget);
+
+extern void kernel_main(void) 
 {
     // QLoader does this, but do it just incase for extra big brain gain
     asm volatile ("cli");
+    
     gdt_init();
+    
+    
+    
     
     hide_cursor();
     draw_menu();
+    print((u8*)65);
     
-    //TODO: GDT and other fancy stuff like that.
+    //TODO: Menu System
     //TODO: Maybe do a terminal system?
     //TODO: Cross-Compiler eventually
+    
     asm volatile ("hlt");
 }

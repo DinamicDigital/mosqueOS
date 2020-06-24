@@ -38,7 +38,7 @@ run: $(KERNEL_HDD)
 	$(CC) $(CHARDFLAGS) -c $< -o $@
 
 $(KERNEL_ELF): $(OBJ)
-	$(LD) $(LDHARDFLAGS) $(OBJ) -o $@
+	$(LD) $(LDHARDFLAGS) $(OBJ) src/startup.o -o $@
 
 $(KERNEL_HDD): $(KERNEL_ELF)
 	-mkdir build

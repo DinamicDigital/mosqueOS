@@ -5,10 +5,25 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 
+struct Terminal_Data {
+    // TODO: Offscreen Buffer that gets drawn to VGA_ADDRESS
+    // Cursor Data
+    u32 cursor_row, cursor_col;
+};
+
+static struct Terminal_Data terminal;
+
+void terminal_echo(unsigned char* str)
+{
+    int len = strlen(str);
+    u16* vga = (int16_t*)VGA_ADDRESS;
+}
+
+// TODO: Is draw_menu() logically supposed to be in this file?
 // TODO: Themes?
 void draw_menu()
 {
-    uint16_t *vga_buffer = (uint16_t*)VGA_ADDRESS;
+    u16 *vga_buffer = (u16*)VGA_ADDRESS;
     
     // Clear screen to specified color.
     for (int i = 0; i < 80 * 25; i++)
@@ -41,7 +56,7 @@ void draw_menu()
     
     // Title "|MosqueOS|"
     int title_len = 10; 
-    uint16_t title_offset = (79 - title_len) / 2;
+    u16 title_offset = (79 - title_len) / 2;
     
     vga_buffer[title_offset] = VGA_COLOR(181, C(VGA_DARK_GRAY, VGA_GREEN));
     print_at_color(vga_buffer + title_offset + 1, "MosqueOS", VGA_DARK_GRAY, VGA_GREEN);

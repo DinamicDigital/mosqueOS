@@ -3,10 +3,11 @@
 #ifndef VGA_H
 #define VGA_H
 
+#include "types.h"
 
 // Default VGA resolution is 80x25 (charaters)
 #define VGA_ADDRESS 0xb8000
-#define VGA_COLOR(character, color) (uint16_t) character | (uint16_t) (color) << 8
+#define VGA_COLOR(character, color) (u16) character | (u16) (color) << 8
 #define C(bg, fg) (bg << 4) | fg
 
 // Colors

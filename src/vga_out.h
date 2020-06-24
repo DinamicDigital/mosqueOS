@@ -1,5 +1,6 @@
 /* date = June 18th 2020 7:12 pm */
 #include "vga.h"
+#include "types.h"
 
 #ifndef VGA_OUT_H
 #define VGA_OUT_H
@@ -20,7 +21,7 @@ int strlen(unsigned char* str)
 void print(unsigned char* str)
 {
     int length = strlen(str);
-    uint16_t* vga = (uint16_t*)VGA_ADDRESS;
+    u16* vga = (u16*)VGA_ADDRESS;
     
     for (int i = 0; i < length; i++)
     {
@@ -28,10 +29,10 @@ void print(unsigned char* str)
     }
 }
 
-void print_color(unsigned char* str, uint8_t bg, uint8_t fg)
+void print_color(unsigned char* str, u8 bg, u8 fg)
 {
     int length = strlen(str);
-    uint16_t* vga = (uint16_t*)VGA_ADDRESS;
+    u16* vga = (u16*)VGA_ADDRESS;
     
     for (int i = 0; i < length; i++)
     {
@@ -39,10 +40,10 @@ void print_color(unsigned char* str, uint8_t bg, uint8_t fg)
     }
 }
 
-void print_at_color(uint16_t* vga_mem, unsigned char* str, uint8_t bg, uint8_t fg)
+void print_at_color(u16* vga_mem, unsigned char* str, u8 bg, u8 fg)
 {
     int length = strlen(str);
-    uint16_t* vga = vga_mem;
+    u16* vga = vga_mem;
     
     for (int i = 0; i < length; i++)
     {

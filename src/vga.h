@@ -4,6 +4,7 @@
 #define VGA_H
 
 #include "types.h"
+#include "ports.h"
 
 // Default VGA resolution is 80x25 (charaters)
 #define VGA_ADDRESS 0xb8000
@@ -28,6 +29,21 @@
 #define VGA_YELLOW       14
 #define VGA_WHITE        15
 
+
+void hide_cursor()
+{
+    outb(0x3D4, 0x0A);
+    outb(0x3D5, 0x20);
+}
+
+void enable_cursor (u8 scanline_start, u8 scanline_end)
+{
+    outb(0x3D4, 0x0A);
+    outb(0x3D5, (inb(0x3D5) & 0xC0) | scanline_start);
+    
+    outb(0x3D4, 0x0B);
+    outb(0x3D5, (inb(0x3D5) & 0xE0) | scanline_end);
+}
 
 
 #endif //VGA_H

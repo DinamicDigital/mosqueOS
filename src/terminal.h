@@ -11,12 +11,25 @@ struct Terminal_Data {
     u32 cursor_row, cursor_col;
 };
 
-static struct Terminal_Data terminal;
+static struct Terminal_Data terminal = { .cursor_row = 1,  .cursor_col = 1 };
 
+// TODO: (NOW) Make this actually work!
 void terminal_echo(unsigned char* str)
 {
     int len = strlen(str);
-    u16* vga = (int16_t*)VGA_ADDRESS;
+    u16* vga = (u16*)VGA_ADDRESS;
+    for (int i = 0; i < len; i++)
+    {
+        if (str[i] == '\n')
+        {
+            terminal.cursor_row++;
+            terminal.cursor_col = 1;
+        }
+        else {
+            vga[80 * terminal.cursor_row + terminal.cursor_col] = VGA_COLOR(str[i], C(VGA_GRAY, VGA_BLACK));
+            terminal.cursor_col++;
+        }
+    }
 }
 
 // TODO: Is draw_menu() logically supposed to be in this file?

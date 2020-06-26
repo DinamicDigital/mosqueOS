@@ -6,13 +6,23 @@
 #include "types.h"
 #include "gdt.h"
 
+
+
 extern void kernel_main(struct stivale_struct* info)
 {
     // QLoader does this, but do it just incase for extra big brain gain
-    // TODO: PAGING
     asm volatile ("cli");
-    //info.memory_map_addr;
     gdt_init();
+    u64 memory_length = 0;
+    
+    // TODO: PAGING
+    u64* mmap_addr = (u64*)info->memory_map_addr;
+    for(u64 i = 0; i < info->memory_map_entries; i++)
+    {
+        memory_length += *(mmap_addr + 8);
+    }
+    
+    
     draw_menu();
     hide_cursor();
     
